@@ -3,9 +3,11 @@ Rails.application.routes.draw do
   # Begin API route
   namespace :api do
     # v1
-    # namespace :v1 do
+    namespace :v1 do
       resources :questions
-    # end
+    end
   end
   # End API route
+  # Below: Public FE routes
+  resources :questions
 end
