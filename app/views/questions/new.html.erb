@@ -1,1 +1,7 @@
 <h1>Add Question</h1>
+
+<%= form_tag do %>
+  <%= label_tag(:question, "What do you want to ask your teammates?") %>
+  <%= text_field_tag(:question) %>
+  <%= submit_tag("Add Question") %>
+<% end %>
