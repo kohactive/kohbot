@@ -9,9 +9,7 @@ Rails.application.routes.draw do
   end
   # End API route
   # Below: Public FE routes
-  resources :questions
-  # TO DO: add :responses model
-  # resources :questions do
-  #   resources :responses
-  # end
+  resources :questions do
+    resources :responses
+  end
 end
