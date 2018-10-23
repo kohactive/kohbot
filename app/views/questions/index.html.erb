@@ -3,7 +3,7 @@
 <ul>
   <% @questions.each do |q| %>
     <!-- TO DO: show if this question has been answered -->
-    <li><%= q.question %></li>
+    <li><%= link_to q.question, question_responses_path(q) %></li>
   <% end %>
 </ul>
 

@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.create(question_params)
-    redirect_to @question
+    redirect_to question_responses_path(@question)
   end
 
   private 
