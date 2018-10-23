@@ -1,18 +1,32 @@
 class ResponsesController < ApplicationController
+  before_action :get_question
 
   def index
-    @question = Question.find(params[:question_id])
     @responses = @question.responses
   end
 
   def show
-    @question = Question.find(params[:question_id])
     @response = @question.responses.find(params[:id])
   end
 
+  def new
+    @response = Response.new()
+  end
+
+  def create
+    @response = @question.responses.new(response_params)
+    if @response.save
+      redirect_to question_responses_path(@question)
+    end
+  end
+
   private 
+
+  def get_question
+    @question = Question.find(params[:question_id])
+  end
   
-  def question_params
-    params[:question].permit(:question)
+  def response_params
+    params[:response].permit(:answer, :user)
    end
 end

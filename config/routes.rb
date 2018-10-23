@@ -10,6 +10,6 @@ Rails.application.routes.draw do
   # End API route
   # Below: Public FE routes
   resources :questions do
-    resources :responses, only: [:index, :show]
+    resources :responses
   end
 end
