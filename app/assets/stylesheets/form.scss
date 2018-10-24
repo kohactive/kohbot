@@ -1,0 +1,29 @@
+.btn,
+.page a.btn,
+input[type="submit"] {
+  appearance: none;
+  padding: 10px 20px;
+  background: #7362DC;
+  color: white;
+  border: 0;
+  font-family: "Nunito Sans", "Helvetica", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-flex;
+  margin: 1rem auto 0;
+}
+
+label {
+  width: 100%;
+}
+
+input[type="text"] {
+  width: 100%;
+  appearance: none;
+  border: 1px solid #bbb;
+  font-family: "Nunito Sans", "Helvetica", sans-serif;
+  font-size: 16px;
+  color: #333;
+  padding: 10px;
+  margin-bottom: 1rem;
+}

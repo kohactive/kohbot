@@ -1,9 +1,11 @@
-<h1>Response</h1>
+<div class="page">
+  <h1>Response</h1>
 
-<%= form_for [@question, @response] do |f| %>
-  <%= f.label(:answer, @question.question) %>
-  <%= f.text_field :answer %>
-  <%= f.label(:user, 'Your Name') %>
-  <%= f.text_field :user %>
-  <%= f.submit "Add Response" %>
-<% end %>
+  <%= form_for [@question, @response] do |f| %>
+    <%= f.label(:answer, @question.question) %>
+    <%= f.text_field :answer %>
+    <%= f.label(:user, 'Your Name') %>
+    <%= f.text_field :user %>
+    <%= f.submit "Add Response" %>
+  <% end %>
+</div>

@@ -1,14 +1,16 @@
-<h1><%= @question.question %></h1>
+<div class="page">
+  <h1><%= @question.question %></h1>
 
-<ul>
-  <% if @responses.any? %>
-    <% @responses.each do |r| %>
-      <li><%= r.answer %> - <%= r.user %></li>
+  <ul>
+    <% if @responses.any? %>
+      <% @responses.each do |r| %>
+        <li><%= r.answer %> - <%= r.user %></li>
+      <% end %>
+    <% else %>
+      <li>No responses yet.</li>
     <% end %>
-  <% else %>
-    <li>No responses yet.</li>
-  <% end %>
-</ul>
+  </ul>
 
-<p><%= link_to "Add Response", action: "new" %></p>
-<p><%= link_to "Back to All Questions", questions_path %></p>
+  <p><%= link_to "Add Response", action: "new" %></p>
+  <p><%= link_to "Back to All Questions", questions_path %></p>
+</div>
