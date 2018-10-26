@@ -28,6 +28,11 @@ class ResponsesController < ApplicationController
     end
   end
 
+  def destroy
+    Response.destroy(params[:id])
+    redirect_to question_responses_path(@question)
+  end
+
   private 
 
   def get_question
