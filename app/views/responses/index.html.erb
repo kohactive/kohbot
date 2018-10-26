@@ -4,13 +4,16 @@
   <ul>
     <% if @responses.any? %>
       <% @responses.each do |r| %>
-        <li><%= r.answer %> - <%= r.user %></li>
+        <li class="reply"><%= r.answer %> - <%= r.user %></li>
       <% end %>
     <% else %>
       <li>No responses yet.</li>
     <% end %>
   </ul>
 
-  <p><%= link_to "Add Response", action: "new" %></p>
-  <p><%= link_to "Back to All Questions", questions_path %></p>
+  <p>
+    <%= link_to "Back to All Questions", questions_path, class: "btn btn-gray" %>
+    <%= link_to "Add Response", { action: "new" }, class: "btn" %>
+    <%= link_to 'Delete Question', question_path(@question), method: :delete, data: {confirm: "Are you sure you want to delete this question and all responses?"}, class: "btn btn-danger" %>
+  </p>
 </div>

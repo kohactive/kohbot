@@ -3,7 +3,8 @@
 
   <%= form_for @question do |f| %>
     <%= f.label(:question, "What do you want to ask your teammates?") %>
-    <%= f.text_field :question %>
+    <%= f.text_field :question, :required => 'required' %>
+    <%= link_to "Cancel", questions_path, class: "btn btn-gray" %>
     <%= f.submit "Add Question" %>
   <% end %>
 </div>

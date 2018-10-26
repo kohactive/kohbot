@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     # v1
     namespace :v1 do
       resources :questions
+        resources :responses
     end
   end
   # End API route

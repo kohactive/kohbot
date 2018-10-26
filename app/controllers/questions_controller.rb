@@ -9,7 +9,13 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.create(question_params)
-    redirect_to question_responses_path(@question)
+    redirect_to questions_path()
+  end
+
+
+  def destroy
+    Question.destroy(params[:id])
+    redirect_to questions_path()
   end
 
   private 

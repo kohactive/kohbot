@@ -1,6 +1,6 @@
 .page {
   width: 100%;
-  max-width: 460px;
+  max-width: 600px;
   margin: 40px auto;
   background: #FFF;
   color: #666;
@@ -32,10 +32,21 @@
   }
 
   li:before {
-    content: "x";
+    content: "✘";
+    color: red;
     display: block;
     position: absolute;
     left: 0;
     top: 0;
+  }
+
+  li.answered:before {
+    content: "✔";
+    color: green;
+  }
+
+  li.reply:before {
+    content: "➔";
+    color: green;
   }
 }

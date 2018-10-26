@@ -11,6 +11,18 @@ input[type="submit"] {
   font-weight: bold;
   display: inline-flex;
   margin: 1rem auto 0;
+  line-height: 1.4;
+}
+
+.btn-gray,
+.page a.btn-gray {
+  background: #dedede;
+  color: #666;
+}
+
+.btn-danger,
+.page a.btn-danger {
+  background: crimson;
 }
 
 label {
@@ -26,4 +38,9 @@ input[type="text"] {
   color: #333;
   padding: 10px;
   margin-bottom: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #7362DC;
 }

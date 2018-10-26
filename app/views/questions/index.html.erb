@@ -4,7 +4,7 @@
   <ul>
     <% @questions.each do |q| %>
       <!-- TO DO: show if this question has been answered -->
-      <li><%= link_to q.question, question_responses_path(q) %></li>
+      <li class="<%= 'answered' if q.responses.length > 0 %>"><%= link_to q.question, question_responses_path(q) %> (<%= q.responses.length %> responses)</li>
     <% end %>
   </ul>
 
