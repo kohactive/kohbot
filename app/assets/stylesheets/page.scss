@@ -2,13 +2,12 @@
   width: 100%;
   max-width: 600px;
   max-height: 80vh;
-  overflow-y: scroll;
   margin: 10vh auto;
   background: #FFF;
   color: #666;
   border-radius: 4px;
   box-shadow: 0 0 5px rgba(0,0,0,0.45);
-  padding: 20px;
+  padding: 20px 40px 40px;
   position: relative;
   line-height: 1.6;
 }
@@ -54,5 +53,32 @@ a.danger {
   li.reply:before {
     content: "➔";
     color: green;
+  }
+
+  li:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+.pull-right {
+  float: right;
+  margin-left: 20px;
+}
+
+.pull-left {
+  float: left;
+  margin-right: 20px;
+}
+
+.page .actions {
+  display: flex;
+  align-items: center;
+  
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
   }
 }
