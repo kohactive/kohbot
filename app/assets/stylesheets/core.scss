@@ -8,9 +8,9 @@ body {
   background: linear-gradient(150deg, #7362DC, #6078FF);
   background-repeat: no-repeat;
   color: white;
-  min-height: 95vh;
   max-width: 100%;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
   font-family: "Nunito Sans", "Helvetica", sans-serif;
   font-size: 16px;
   line-height: 24px;
