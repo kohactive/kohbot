@@ -4,7 +4,11 @@
   <ul>
     <% if @responses.any? %>
       <% @responses.each do |r| %>
-        <li class="reply"><%= r.answer %> - <%= r.user %></li>
+        <li class="reply">
+          <strong>"<%= r.answer %>"</strong>, said <%= r.user %><br/>
+          <%= link_to "Edit", edit_question_response_path(@question, r), action: "edit", class: "primary" %> | 
+          <%= link_to "Delete", question_response_path(@question, r), method: :delete, class: "danger" %>
+        </li>
       <% end %>
     <% else %>
       <li>No responses yet.</li>

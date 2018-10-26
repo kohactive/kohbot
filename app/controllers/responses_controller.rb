@@ -5,8 +5,16 @@ class ResponsesController < ApplicationController
     @responses = @question.responses
   end
 
-  def show
+  def edit
     @response = @question.responses.find(params[:id])
+  end
+
+  def update
+    @response = Response.find(params[:id])
+    @response.update(response_params)
+    if @response.save
+      redirect_to question_responses_path(@question)
+    end
   end
 
   def new
