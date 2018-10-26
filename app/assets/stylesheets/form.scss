@@ -5,6 +5,7 @@ input[type="submit"] {
   padding: 10px 20px;
   background: #7362DC;
   color: white;
+  text-align: center;
   border: 0;
   font-family: "Nunito Sans", "Helvetica", sans-serif;
   font-size: 16px;
@@ -12,17 +13,31 @@ input[type="submit"] {
   display: inline-flex;
   margin: 1rem auto 0;
   line-height: 1.4;
+
+  &:hover {
+    background: #5d50b2;
+    color: white;
+  }
 }
 
 .btn-gray,
 .page a.btn-gray {
   background: #dedede;
-  color: #666;
+  color: #444;
+
+  &:hover {
+    background: #bcbcbc;
+    color: #444;
+  }
 }
 
 .btn-danger,
 .page a.btn-danger {
   background: crimson;
+  &:hover {
+    background: darkred;
+    color: white;
+  }
 }
 
 label {

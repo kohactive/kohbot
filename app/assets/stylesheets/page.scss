@@ -3,6 +3,7 @@
   max-width: 600px;
   max-height: 80vh;
   margin: 10vh auto;
+  overflow-y: scroll;
   background: #FFF;
   color: #666;
   border-radius: 4px;
@@ -14,10 +15,16 @@
 
 .page a {
   color: #7362DC;
+  &:hover {
+    color: #5d50b2;
+  }
 }
 
 a.danger {
   color: crimson;
+  &:hover {
+    color: darkred;
+  }
 }
 
 .page h1 {

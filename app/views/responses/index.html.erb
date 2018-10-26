@@ -7,8 +7,8 @@
         <li class="reply">
           <strong>"<%= r.answer %>"</strong>, said <%= r.user %>
           <span class="pull-right">
-            <%= link_to "Edit", edit_question_response_path(@question, r), action: "edit", class: "primary" %> | 
-            <%= link_to "Delete", question_response_path(@question, r), method: :delete, data: {confirm: "Are you sure you want to delete this response?"}, class: "danger" %>
+            <%= link_to "✒ Edit", edit_question_response_path(@question, r), action: "edit", class: "primary" %> &nbsp; 
+            <%= link_to "✖ Delete", question_response_path(@question, r), method: :delete, data: {confirm: "Are you sure you want to delete this response?"}, class: "danger" %>
           </span>
         </li>
       <% end %>
