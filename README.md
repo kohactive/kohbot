@@ -22,3 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## Local Development
+To run locally, start the rails server:
+`bin/rails s`
+
+And run a proxy to test with Slack:
+`./ngrok http 3000`
