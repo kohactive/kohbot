@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     # v1
     namespace :v1 do
+      resources :bots, defaults: {format: :json}
       resources :questions
         resources :responses
     end
