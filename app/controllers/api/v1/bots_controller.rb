@@ -21,9 +21,9 @@ class Api::V1::BotsController < Api::V1::ApiController
         # Received a DM to KohBot => Get Channel & User of conversation
         channel = params[:event][:channel]
         user = params[:event][:user]
+        @user = User.where(ucode: user)
         # Check first word for a command
         command = params[:event][:text].partition(" ").first
-
 
         # First, check this isn't our bot talking...
         if params[:event][:subtype].eql? "bot_message"
@@ -32,7 +32,11 @@ class Api::V1::BotsController < Api::V1::ApiController
         elsif ['opt','yes','join','no','leave'].any? { |word| command.include?(word) }
           # opt: inverse your current status (or create)
           if command.include?("opt")
-          
+            if @user.active
+              message = "You're in! :tada:"
+            else
+              message = "Come back soon! :wave:"
+            end
           # yes or join: change to opted in (or create)
           elsif ['yes','join'].any? { |word| command.include?(word) }
             message = "Thanks for joining! :tada:"
@@ -53,7 +57,6 @@ class Api::V1::BotsController < Api::V1::ApiController
         else
           # None of the above -- do we know who this is?
           # Look for user
-          @user = User.where(ucode: user)
           if @user.length > 0
             # true === opted in
             if @user.active
