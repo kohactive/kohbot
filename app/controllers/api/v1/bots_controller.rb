@@ -11,8 +11,10 @@ class Api::V1::BotsController < Api::V1::ApiController
     challenge = params[:challenge]
     token = params[:token]
     if challenge
+      # Verify to Slack
       render :json => {challenge: challenge}, :status => :ok
     elsif token
+      # Already verified => Proceed to Actions
       event = params[:event][:type]
       if event.include? "message"
         channel = params[:event][:channel]
@@ -48,6 +50,7 @@ class Api::V1::BotsController < Api::V1::ApiController
         render :json => {message: "handler for #{event} not found"}, :status => :not_implemented
       end
     else
+      # Not a valid request from Slack
       render :json => {message: "Request not recognized."}, :status => :not_implemented
     end
   end
