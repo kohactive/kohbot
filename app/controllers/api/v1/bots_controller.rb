@@ -24,8 +24,12 @@ class Api::V1::BotsController < Api::V1::ApiController
         # Check first word for a command
         command = params[:event][:text].partition(" ").first
 
+
+        # First, check this isn't our bot talking...
+        if params[:event][:subtype].eql? "bot_message"
+          # Do nothing -- that last message was us!
         # Is this a status change?
-        if ['opt','yes','join','no','leave'].any? { |word| command.include?(word) }
+        elsif ['opt','yes','join','no','leave'].any? { |word| command.include?(word) }
           # opt: inverse your current status (or create)
           if command.include?("opt")
           
@@ -48,29 +52,23 @@ class Api::V1::BotsController < Api::V1::ApiController
 
         else
           # None of the above -- do we know who this is?
-          # First, check this isn't our bot talking...
-          if user.eql? "UDVUG02HM"
-            # Do nothing -- that last message was us!
-          else
           # Look for user
-            @user = User.find(:first, :conditions => [ "ucode = ?", user])
-            if @user
-              # true === opted in
-              if @user.active
-                # If opted in, give all options and (if applicable) current question
-                message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
-                # message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *What would you do?*.\nType 'ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
-              else
-                # false === opted out
-                # If opted out, ask if they want to rejoin
-                message = "You're back! :raised_hands: You're currently opted out. Want to join? Reply `opt`, `yes`, or `join`."
-              end
+          @user = User.where(ucode: user)
+          if @user.length > 0
+            # true === opted in
+            if @user.active
+              # If opted in, give all options and (if applicable) current question
+              message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+              # message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *What would you do?*.\nType 'ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
             else
-              # User Not Found
-              message = "Hello! :wave: I don't see you in my system. :scream: Tell me `opt`, `yes`, or `join` to join our KohBot adventures."
+              # false === opted out
+              # If opted out, ask if they want to rejoin
+              message = "You're back! :raised_hands: You're currently opted out. Want to join? Reply `opt`, `yes`, or `join`."
             end
+          else
+            # User Not Found
+            message = "Hello! :wave: I don't see you in my system. :scream: Tell me `opt`, `yes`, or `join` to join our KohBot adventures."
           end
-
         end
 
         # Perform action
