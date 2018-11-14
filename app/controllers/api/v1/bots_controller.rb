@@ -33,7 +33,6 @@ class Api::V1::BotsController < Api::V1::ApiController
           if !@user
             @user = User.new(ucode: user, active: false)
           end
-          puts @user.inspect
           # opt: inverse your current status (or create)
           if command.include?("opt")
             if @user.active === true
