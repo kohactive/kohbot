@@ -21,7 +21,7 @@ class Api::V1::BotsController < Api::V1::ApiController
         # Received a DM to KohBot => Get Channel & User of conversation
         channel = params[:event][:channel]
         user = params[:event][:user]
-        @user = User.where(ucode: user)
+        @user = User.where(ucode: user).first
         # Check first word for a command
         command = params[:event][:text].partition(" ").first
 
@@ -30,20 +30,44 @@ class Api::V1::BotsController < Api::V1::ApiController
           # Do nothing -- that last message was us!
         # Is this a status change?
         elsif ['opt','yes','join','no','leave'].any? { |word| command.include?(word) }
+          if !@user
+            @user = User.new(ucode: user, active: false)
+          end
+          puts @user.inspect
           # opt: inverse your current status (or create)
           if command.include?("opt")
-            if @user.active
-              message = "You're in! :tada:"
+            if @user.active === true
+              @user.active = false
+              if @user.save
+                message = "Come back soon! :wave:"
+              else
+                message = "Sorry, something went wrong. :robot_face: Please try again."
+              end
             else
-              message = "Come back soon! :wave:"
+              @user.active = true
+              if @user.save
+                message = "You're in! :tada:"
+              else
+                message = "Sorry, something went wrong. :robot_face: Please try again."
+              end
             end
           # yes or join: change to opted in (or create)
           elsif ['yes','join'].any? { |word| command.include?(word) }
-            message = "Thanks for joining! :tada:"
+            @user.active = true
+            if @user.save
+              message = "Thanks for joining! :tada:"
+            else
+              message = "Sorry, something went wrong. :robot_face: Please try again."
+            end
 
           # no or leave: change to opted out
           else
-            message = "Take a break! :desert_island: Type `opt`, `yes` or `join` anytime to hop back in."
+            @user.active = false
+            if @user.save
+              message = "Take a break! :desert_island: Type `opt`, `yes` or `join` anytime to hop back in."
+            else
+              message = "Sorry, something went wrong. :robot_face: Please try again."
+            end
           end
 
         elsif command.include?("question:")
@@ -70,7 +94,7 @@ class Api::V1::BotsController < Api::V1::ApiController
             end
           else
             # User Not Found
-            message = "Hello! :wave: I don't see you in my system. :scream: Tell me `opt`, `yes`, or `join` to join our KohBot adventures."
+            message = "Hello! :wave: New bot, who 'dis? :eyes: Tell me `opt`, `yes`, or `join` to join our KohBot adventures."
           end
         end
 
