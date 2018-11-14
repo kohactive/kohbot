@@ -81,7 +81,7 @@ class Api::V1::BotsController < Api::V1::ApiController
         else
           # None of the above -- do we know who this is?
           # Look for user
-          if @user.length > 0
+          if @user
             # true === opted in
             if @user.active
               # If opted in, give all options and (if applicable) current question
