@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181112223634) do
+ActiveRecord::Schema.define(version: 20181116204845) do
 
   create_table "questions", force: :cascade do |t|
     t.string "question"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20181112223634) do
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "channel"
   end
 
 end

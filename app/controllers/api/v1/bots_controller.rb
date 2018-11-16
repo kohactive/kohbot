@@ -31,7 +31,7 @@ class Api::V1::BotsController < Api::V1::ApiController
         # Is this a status change?
         elsif ['opt','yes','join','no','leave'].any? { |word| command.include?(word) }
           if !@user
-            @user = User.new(ucode: user, active: false)
+            @user = User.new(ucode: user, active: false, channel: channel)
           end
           # opt: inverse your current status (or create)
           if command.include?("opt")
