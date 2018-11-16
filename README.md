@@ -1,6 +1,6 @@
 # KohBot
 
-KohBot is fun for the whole Slack channel! :robot_face: :tada:
+KohBot is fun for the whole Slack channel! :robot: :tada:
 
 **KohBot:**
 - Recieves fun culture questions from a user via DM
