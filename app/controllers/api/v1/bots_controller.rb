@@ -90,17 +90,17 @@ class Api::V1::BotsController < Api::V1::ApiController
 
 
   ### TOGGLE user status
-  def opt_route( @user )
-    if @user.active === true
-      @user.active = false
-      if @user.save
+  def opt_route( user )
+    if user.active === true
+      user.active = false
+      if user.save
         return "Come back soon! :wave:"
       else
         return "Sorry, something went wrong. :robot_face: Please try again."
       end
     else
-      @user.active = true
-      if @user.save
+      user.active = true
+      if user.save
         return "You're in! :tada:"
       else
         return "Sorry, something went wrong. :robot_face: Please try again."
@@ -109,9 +109,9 @@ class Api::V1::BotsController < Api::V1::ApiController
   end
 
   ### JOIN / set user to active
-  def join_route( @user )
-    @user.active = true
-    if @user.save
+  def join_route( user )
+    user.active = true
+    if user.save
       return "Thanks for joining! :tada:"
     else
       return "Sorry, something went wrong. :robot_face: Please try again."
@@ -119,9 +119,9 @@ class Api::V1::BotsController < Api::V1::ApiController
   end
 
   ### LEAVE / set user to inactive
-  def leave_route( @user )
-    @user.active = false
-    if @user.save
+  def leave_route( user )
+    user.active = false
+    if user.save
       return "Take a break! :desert_island: Type `opt`, `yes` or `join` anytime to hop back in."
     else
       return "Sorry, something went wrong. :robot_face: Please try again."
