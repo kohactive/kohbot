@@ -31,42 +31,19 @@ class Api::V1::BotsController < Api::V1::ApiController
         # Is this a status change?
         elsif ['opt','yes','join','no','leave'].any? { |word| command.include?(word) }
           if !@user
-            @user = User.new(ucode: user, active: false)
+            @user = User.new(ucode: user, active: false, channel: channel)
           end
           # opt: inverse your current status (or create)
           if command.include?("opt")
-            if @user.active === true
-              @user.active = false
-              if @user.save
-                message = "Come back soon! :wave:"
-              else
-                message = "Sorry, something went wrong. :robot_face: Please try again."
-              end
-            else
-              @user.active = true
-              if @user.save
-                message = "You're in! :tada:"
-              else
-                message = "Sorry, something went wrong. :robot_face: Please try again."
-              end
-            end
+            message = opt_route( @user )
+
           # yes or join: change to opted in (or create)
           elsif ['yes','join'].any? { |word| command.include?(word) }
-            @user.active = true
-            if @user.save
-              message = "Thanks for joining! :tada:"
-            else
-              message = "Sorry, something went wrong. :robot_face: Please try again."
-            end
+            message = join_route( @user )
 
           # no or leave: change to opted out
           else
-            @user.active = false
-            if @user.save
-              message = "Take a break! :desert_island: Type `opt`, `yes` or `join` anytime to hop back in."
-            else
-              message = "Sorry, something went wrong. :robot_face: Please try again."
-            end
+            message = leave_route( @user )
           end
 
         elsif command.include?("question:")
@@ -111,6 +88,45 @@ class Api::V1::BotsController < Api::V1::ApiController
     end
   end
 
+
+  ### TOGGLE user status
+  def opt_route( @user )
+    if @user.active === true
+      @user.active = false
+      if @user.save
+        return "Come back soon! :wave:"
+      else
+        return "Sorry, something went wrong. :robot_face: Please try again."
+      end
+    else
+      @user.active = true
+      if @user.save
+        return "You're in! :tada:"
+      else
+        return "Sorry, something went wrong. :robot_face: Please try again."
+      end
+    end
+  end
+
+  ### JOIN / set user to active
+  def join_route( @user )
+    @user.active = true
+    if @user.save
+      return "Thanks for joining! :tada:"
+    else
+      return "Sorry, something went wrong. :robot_face: Please try again."
+    end
+  end
+
+  ### LEAVE / set user to inactive
+  def leave_route( @user )
+    @user.active = false
+    if @user.save
+      return "Take a break! :desert_island: Type `opt`, `yes` or `join` anytime to hop back in."
+    else
+      return "Sorry, something went wrong. :robot_face: Please try again."
+    end
+  end
 
   ### POST message to slack
   def post_slack_msg( channel, message )
