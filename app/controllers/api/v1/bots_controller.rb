@@ -4,7 +4,8 @@ class Api::V1::BotsController < Api::V1::ApiController
   skip_before_action :verify_authenticity_token
 
   def index
-    render :json => {message: "empty."}, :status => :ok 
+    today = Question.left_outer_joins(:responses).where(responses: {id: nil}).order("RANDOM()").first
+    render :json => { question: today }, :status => :ok 
   end
 
   def create
