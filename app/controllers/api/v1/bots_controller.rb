@@ -133,13 +133,13 @@ class Api::V1::BotsController < Api::V1::ApiController
     query = text.gsub("question:", "")
     query = query.strip
     if Question.where(question: query).first
-      message = "Can you believe......... Someone already asked that!"
+      return "Can you believe......... Someone already asked that!"
     else
       question = Question.new(question: query, user: user)
       if question.save
-        message = "Good one! :eyes: Can't wait to share this one.\nYou said: `#{query}`"
+        return "Good one! :eyes: Can't wait to share this one."
       else
-        message = "My bad. Didn't quiet catch that. :blush: Try again?"
+        return "My bad. Didn't quiet catch that. :blush: Try again?"
       end
     end
   end
