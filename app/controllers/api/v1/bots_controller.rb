@@ -91,7 +91,7 @@ class Api::V1::BotsController < Api::V1::ApiController
 
   ### TOGGLE user status
   def opt( user )
-    if user.active === true
+    if user.active?
       user.active = false
       if user.save
         return "Come back soon! :wave:"
@@ -132,10 +132,10 @@ class Api::V1::BotsController < Api::V1::ApiController
   def save_question( text, user )
     query = text.gsub("question:", "")
     query = query.strip
-    if Question.where(question: query).first
+    if Question.where('lower(question) =?', query.downcase).any?
       return "Can you believe......... Someone already asked that!"
     else
-      question = Question.new(question: query, user: user)
+      question = user.questions.new(question: query)
       if question.save
         return "Good one! :eyes: Can't wait to share this one."
       else
