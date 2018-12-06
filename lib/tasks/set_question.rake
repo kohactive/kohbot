@@ -1,5 +1,7 @@
 desc 'set question for the day'
 task set_todays_question: :environment do
+
+
   # First check there is no active question already
   if Question.where(open: true).none?
     # get a random unanswered question
@@ -12,6 +14,7 @@ task set_todays_question: :environment do
     else
       # puts "All questions have been answered!"
     end
+
   else
     # Check sure this question hasn't expired
     question = Question.where(open: true).first
@@ -21,4 +24,5 @@ task set_todays_question: :environment do
       # puts "Question expired."
     end
   end
+
 end

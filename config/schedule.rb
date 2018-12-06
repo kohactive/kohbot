@@ -24,3 +24,7 @@
 every :weekday, at: ['9:00 am', '9:30am', '10:00 am'] do 
   rake "Task.set_todays_question"
 end
+
+every :weekday, at: ['12:00 pm', '12:30pm', '01:00 pm'] do 
+  rake "Task.post_results"
+end
