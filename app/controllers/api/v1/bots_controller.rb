@@ -66,7 +66,7 @@ class Api::V1::BotsController < Api::V1::ApiController
                 message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
               else
                 question = Question.where(open: true).first
-                message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *#{question.question}*.\nType 'ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+                message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *#{question.question}*.\nType `ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
               end
             else
               # false === opted out
@@ -150,22 +150,22 @@ class Api::V1::BotsController < Api::V1::ApiController
   end
 
   def save_answer( text, user )
-    if Question.where(open: true).none?
+    if Question.where(open: true).any?
       question = Question.where(open: true).first
-      if question.responses.where(ucode: user).none?
+      if question.responses.left_outer_joins(:user).where(user: user).none?
         reply = text.gsub("ans:", "")
         reply = reply.strip
-        answer = question.responses.new(answer: reply)
+        answer = question.responses.new(answer: reply, user: user)
         if answer.save
           return ":white_check_mark: Got it!"
         else
-          return "I'm a bad bot and couldn't save your answer!!!1 :sob:"
+          return "I'm a bad bot and couldn't save your answer!! :sob:"
         end
       else
-        return ":scream: You already answered this question! No takesy-backsies! :upsidedown_smiley:"
+        return ":scream: You already answered this question! No takesy-backsies! :upside_down_face:"
       end
     else
-      return "There's no active question right now, ya goof! :smile:"
+      return "There's no active question right now, ya goof! :wink:"
     end
   end
 
