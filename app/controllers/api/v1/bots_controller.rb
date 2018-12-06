@@ -53,7 +53,7 @@ class Api::V1::BotsController < Api::V1::ApiController
 
         elsif command.include?("ans:")
           # Is this a response to a question?
-          message = ":white_check_mark: Got it!"
+          message = save_answer( params[:event][:text], @user)
 
         else
           # None of the above -- do we know who this is?
@@ -61,9 +61,13 @@ class Api::V1::BotsController < Api::V1::ApiController
           if @user
             # true === opted in
             if @user.active
-              # If opted in, give all options and (if applicable) current question
-              message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
-              # message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *What would you do?*.\nType 'ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+              if Question.where(open: true).none?
+                # If opted in, give all options and (if applicable) current question
+                message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+              else
+                question = Question.where(open: true).first
+                message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *#{question.question}*.\nType 'ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+              end
             else
               # false === opted out
               # If opted out, ask if they want to rejoin
@@ -142,6 +146,26 @@ class Api::V1::BotsController < Api::V1::ApiController
       else
         return "My bad. Didn't quiet catch that. :blush: Try again?"
       end
+    end
+  end
+
+  def save_answer( text, user )
+    if Question.where(open: true).none?
+      question = Question.where(open: true).first
+      if question.responses.where(ucode: user).none?
+        reply = text.gsub("ans:", "")
+        reply = reply.strip
+        answer = question.responses.new(answer: reply)
+        if answer.save
+          return ":white_check_mark: Got it!"
+        else
+          return "I'm a bad bot and couldn't save your answer!!!1 :sob:"
+        end
+      else
+        return ":scream: You already answered this question! No takesy-backsies! :upsidedown_smiley:"
+      end
+    else
+      return "There's no active question right now, ya goof! :smile:"
     end
   end
 
