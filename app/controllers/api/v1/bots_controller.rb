@@ -35,20 +35,20 @@ class Api::V1::BotsController < Api::V1::ApiController
           end
           # opt: inverse your current status (or create)
           if command.include?("opt")
-            message = opt_route( @user )
+            message = opt( @user )
 
           # yes or join: change to opted in (or create)
           elsif ['yes','join'].any? { |word| command.include?(word) }
-            message = join_route( @user )
+            message = join( @user )
 
           # no or leave: change to opted out
           else
-            message = leave_route( @user )
+            message = leave( @user )
           end
 
         elsif command.include?("question:")
           # Is this a request to add a question?
-          message = "Good one! :eyes: Can't wait to share this one."
+          message = save_question( params[:event][:text], @user )
 
         elsif command.include?("ans:")
           # Is this a response to a question?
@@ -90,17 +90,17 @@ class Api::V1::BotsController < Api::V1::ApiController
 
 
   ### TOGGLE user status
-  def opt_route( @user )
-    if @user.active === true
-      @user.active = false
-      if @user.save
+  def opt( user )
+    if user.active?
+      user.active = false
+      if user.save
         return "Come back soon! :wave:"
       else
         return "Sorry, something went wrong. :robot_face: Please try again."
       end
     else
-      @user.active = true
-      if @user.save
+      user.active = true
+      if user.save
         return "You're in! :tada:"
       else
         return "Sorry, something went wrong. :robot_face: Please try again."
@@ -109,9 +109,9 @@ class Api::V1::BotsController < Api::V1::ApiController
   end
 
   ### JOIN / set user to active
-  def join_route( @user )
-    @user.active = true
-    if @user.save
+  def join( user )
+    user.active = true
+    if user.save
       return "Thanks for joining! :tada:"
     else
       return "Sorry, something went wrong. :robot_face: Please try again."
@@ -119,12 +119,28 @@ class Api::V1::BotsController < Api::V1::ApiController
   end
 
   ### LEAVE / set user to inactive
-  def leave_route( @user )
-    @user.active = false
-    if @user.save
+  def leave( user )
+    user.active = false
+    if user.save
       return "Take a break! :desert_island: Type `opt`, `yes` or `join` anytime to hop back in."
     else
       return "Sorry, something went wrong. :robot_face: Please try again."
+    end
+  end
+
+  ### ADD QUESTION
+  def save_question( text, user )
+    query = text.gsub("question:", "")
+    query = query.strip
+    if Question.where('lower(question) =?', query.downcase).any?
+      return "Can you believe......... Someone already asked that!"
+    else
+      question = user.questions.new(question: query)
+      if question.save
+        return "Good one! :eyes: Can't wait to share this one."
+      else
+        return "My bad. Didn't quiet catch that. :blush: Try again?"
+      end
     end
   end
 
