@@ -20,7 +20,7 @@ You will need to add a bot to your workspace. Your bot needs to subscribed to ev
 
 `BOT_AUTH: xoxb-1234567890-12324567890`.
 
-Replace the string past the equals sign (`=`) with your bot's auth token provided by Slack.
+Replace the string past the colon (`:`) with your bot's auth token provided by Slack.
 
 ## Local Development
 To run locally, start the rails server:
