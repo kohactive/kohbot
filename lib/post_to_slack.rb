@@ -1,12 +1,13 @@
 class PostToSlack
-  def self.post_slack_msg( channel, message )
+  def self.post_slack_msg( channel, message, attachments )
     token = ENV["BOT_AUTH"]
     begin
-      options = { query: { channel: channel, text: message }, headers: { 'Authorization' => "Bearer #{token}"} }
+      attachments = attachments.to_json
+      options = { query: { channel: channel, text: message, attachments: attachments }, headers: { 'Authorization' => "Bearer #{token}"} }
       response = HTTParty.post('https://slack.com/api/chat.postMessage', options)
-      render :json => {response: response }, :status => :ok
+      puts response.to_json
     rescue => e
-      render :json => {message: "could not post message", error: e}, :status => :not_implemented
+      puts e
     end
   end
 end
