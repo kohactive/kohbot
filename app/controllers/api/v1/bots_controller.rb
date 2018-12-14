@@ -140,7 +140,7 @@ class Api::V1::BotsController < Api::V1::ApiController
     if Question.where('lower(question) =?', query.downcase).any?
       return "Can you believe......... Someone already asked that!"
     else
-      question = user.questions.new(question: query)
+      question = Question.new(question: query, user: user)
       if question.save
         return "Good one! :eyes: Can't wait to share this one."
       else

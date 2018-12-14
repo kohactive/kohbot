@@ -11,10 +11,12 @@ task set_todays_question: :environment do
       today.date_asked = Date.today
       today.save
       # puts today.question
-      channel = 'DDV3FC2BX'
-      message = 'Good morning! After your cup of :coffee:, here\'s today\'s question:\n>*#{today.question}*'
+      message = "Good morning! After your cup of :coffee:, here\'s today\'s question:\n>*#{today.question}*"
       attachments = []
-      PostToSlack.post_slack_msg( channel, message, attachments )
+      allUsers = User.where(active: true)
+      allUsers.each do |u|
+        PostToSlack.post_slack_msg( u.channel, message, attachments )
+      end
     else
       puts "All questions have been answered!"
     end
