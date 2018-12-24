@@ -26,7 +26,7 @@ class ResultsWorker
             text: "#{answer.answer}"
           })
         end
-        channel = ENV["RESULTS_CHANNEL"]
+        channel = "RESULTS"
         PostToSlack.post_slack_msg( channel, message, attachments )
       end
       # Set question to inactive
