@@ -1,7 +1,8 @@
+# TODO: Move worker logic into service
+require 'post_to_slack'
 class ResultsWorker
   include Sidekiq::Worker
   def perform
-    require 'post_to_slack'
     # Check there is an open question
     # We don't need to do anything if not
     if Question.where(open: true).any?

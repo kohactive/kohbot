@@ -1,9 +1,10 @@
+# TODO: Replace with https://github.com/slack-ruby/slack-ruby-client
 class PostToSlack
   def self.post_slack_msg( channel, message, attachments )
     token = ENV["BOT_AUTH"]
     begin
       attachments = attachments.to_json
-      if channel==="RESULTS"
+      if channel === "RESULTS"
         options = { query: { text: message, attachments: attachments } }
         url = ENV["RESULTS_CHANNEL"]
       else

@@ -1,22 +1,22 @@
+# TODO: Move worker logic into service
+require 'post_to_slack'
 class QuestionWorker
   include Sidekiq::Worker
   def perform
-    require 'post_to_slack'
-
     # First check there is no active question already
-    if Question.where(open: true).none?
+    if Question.open.none?
       # get a random unanswered question
-      today = Question.left_outer_joins(:responses).where(responses: {id: nil}).order("RANDOM()").first
+      todays_question = Question.left_outer_joins(:responses).where(responses: {id: nil}).order("RANDOM()").first
       if today
-        today.open = true
-        today.date_asked = Date.today
-        today.save
+        todays_question.open = true
+        todays_question.date_asked = Date.today
+        todays_question.save
         # puts today.question
-        message = "Good morning! After your cup of :coffee:, here\'s today\'s question:\n>*#{today.question}*"
+        message = "Good morning! After your cup of :coffee:, here\'s today\'s question:\n>*#{todays_question.question}*"
         attachments = []
         # Get all active users and DM them the question
-        allUsers = User.where(active: true)
-        allUsers.each do |u|
+        all_users = User.where(active: true)
+        all_users.each do |u|
           PostToSlack.post_slack_msg( u.channel, message, attachments )
         end
       else
