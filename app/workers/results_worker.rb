@@ -5,8 +5,8 @@ class ResultsWorker
   def perform
     # Check there is an open question
     # We don't need to do anything if not
-    if Question.where(open: true).any?
-      question = Question.where(open: true).first
+    if Question.open.any?
+      question = Question.open.first
       message = ":rocket: *The results are in!* :rocket:\n"
       attachments = []
       # Did we get responses?
@@ -14,8 +14,8 @@ class ResultsWorker
         attachments.push({
               fallback: "...Or not? *Nobody submitted their answers!* :flushed: How embarassing.",
               color: "danger",
-              author_name: "<@#{answer.user.ucode}>",
-              text: "Optional text that appears within the attachment"
+              author_name: "<@kohbot>",
+              text: "...Or not? *Nobody submitted their answers!* :flushed: How embarassing."
         })
       else
         # Yes -- publish responses
@@ -31,8 +31,7 @@ class ResultsWorker
         PostToSlack.post_slack_msg( channel, message, attachments )
       end
       # Set question to inactive
-      question.open = false
-      question.save
+      question.mark_as_closed!
     end # end check if question
   end
 end
