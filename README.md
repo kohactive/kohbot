@@ -22,6 +22,10 @@ You will need to add a bot to your workspace. Your bot needs to subscribed to ev
 
 Replace the string past the colon (`:`) with your bot's auth token provided by Slack.
 
+`RESULTS_HOOK: https://hooks.slack.com/services/####/####/#####`
+
+Set `RESULTS_HOOK` with the webhook URL for the channel you will want your bot to post to. (`#General` or its own channel is recommended.)
+
 ## Local Development
 To run locally, start the rails server:
 
