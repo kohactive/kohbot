@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181116204845) do
+ActiveRecord::Schema.define(version: 20181206033659) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "questions", force: :cascade do |t|
     t.string "question"
@@ -18,6 +21,8 @@ ActiveRecord::Schema.define(version: 20181116204845) do
     t.datetime "updated_at", null: false
     t.integer "responses_id"
     t.integer "user_id"
+    t.boolean "open"
+    t.date "date_asked"
     t.index ["responses_id"], name: "index_questions_on_responses_id"
     t.index ["user_id"], name: "index_questions_on_user_id"
   end

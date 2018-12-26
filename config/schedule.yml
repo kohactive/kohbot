@@ -1,0 +1,7 @@
+send_todays_question:
+  cron: "0 9 * * 1-5"
+  class: "QuestionWorker"
+
+post_all_results:
+  cron: "0 13 * * 1-5"
+  class: "ResultsWorker"

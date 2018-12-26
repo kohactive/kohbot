@@ -1,10 +1,12 @@
+require 'post_to_slack'
 class Api::V1::BotsController < Api::V1::ApiController
   # Bot Controller
   ################
   skip_before_action :verify_authenticity_token
 
   def index
-    render :json => {message: "empty."}, :status => :ok 
+    today = Question.left_outer_joins(:responses).where(responses: {id: nil}).order("RANDOM()").first
+    render :json => { question: today }, :status => :ok 
   end
 
   def create
@@ -52,7 +54,7 @@ class Api::V1::BotsController < Api::V1::ApiController
 
         elsif command.include?("ans:")
           # Is this a response to a question?
-          message = ":white_check_mark: Got it!"
+          message = save_answer( params[:event][:text], @user)
 
         else
           # None of the above -- do we know who this is?
@@ -60,9 +62,13 @@ class Api::V1::BotsController < Api::V1::ApiController
           if @user
             # true === opted in
             if @user.active
-              # If opted in, give all options and (if applicable) current question
-              message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
-              # message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *What would you do?*.\nType 'ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+              if Question.open.none?
+                # If opted in, give all options and (if applicable) current question
+                message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+              else
+                question = Question.open.first
+                message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *#{question.question}*.\nType `ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+              end
             else
               # false === opted out
               # If opted out, ask if they want to rejoin
@@ -76,7 +82,7 @@ class Api::V1::BotsController < Api::V1::ApiController
 
         # Perform action
         if message
-          post_slack_msg( channel, message )
+          PostToSlack.post_slack_msg( channel, message, [] )
         end
       else
         render :json => {message: "handler for #{event} not found"}, :status => :not_implemented
@@ -135,7 +141,7 @@ class Api::V1::BotsController < Api::V1::ApiController
     if Question.where('lower(question) =?', query.downcase).any?
       return "Can you believe......... Someone already asked that!"
     else
-      question = user.questions.new(question: query)
+      question = Question.new(question: query, user: user)
       if question.save
         return "Good one! :eyes: Can't wait to share this one."
       else
@@ -144,15 +150,24 @@ class Api::V1::BotsController < Api::V1::ApiController
     end
   end
 
-  ### POST message to slack
-  def post_slack_msg( channel, message )
-    token = ENV["BOT_AUTH"]
-    begin
-      options = { query: { channel: channel, text: message }, headers: { 'Authorization' => "Bearer #{token}"} }
-      response = HTTParty.post('https://slack.com/api/chat.postMessage', options)
-      render :json => {response: response }, :status => :ok
-    rescue => e
-      render :json => {message: "could not post message", error: e}, :status => :not_implemented
+  ## Save Answer
+  def save_answer( text, user )
+    if Question.where(open: true).any?
+      question = Question.open.first
+      if question.responses.left_outer_joins(:user).where(user: user).none?
+        reply = text.gsub("ans:", "")
+        reply = reply.strip
+        answer = question.responses.new(answer: reply, user: user)
+        if answer.save
+          return ":white_check_mark: Got it!"
+        else
+          return "I'm a bad bot and couldn't save your answer!! :sob:"
+        end
+      else
+        return ":scream: You already answered this question! No takesy-backsies! :upside_down_face:"
+      end
+    else
+      return "There's no active question right now, ya goof! :wink:"
     end
   end
 end
