@@ -1,3 +1,4 @@
+require 'post_to_slack'
 class Api::V1::BotsController < Api::V1::ApiController
   # Bot Controller
   ################
@@ -61,11 +62,11 @@ class Api::V1::BotsController < Api::V1::ApiController
           if @user
             # true === opted in
             if @user.active
-              if Question.where(open: true).none?
+              if Question.open.none?
                 # If opted in, give all options and (if applicable) current question
                 message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
               else
-                question = Question.where(open: true).first
+                question = Question.open.first
                 message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *#{question.question}*.\nType `ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
               end
             else
@@ -81,7 +82,7 @@ class Api::V1::BotsController < Api::V1::ApiController
 
         # Perform action
         if message
-          post_slack_msg( channel, message )
+          PostToSlack.post_slack_msg( channel, message, [] )
         end
       else
         render :json => {message: "handler for #{event} not found"}, :status => :not_implemented
@@ -149,9 +150,10 @@ class Api::V1::BotsController < Api::V1::ApiController
     end
   end
 
+  ## Save Answer
   def save_answer( text, user )
     if Question.where(open: true).any?
-      question = Question.where(open: true).first
+      question = Question.open.first
       if question.responses.left_outer_joins(:user).where(user: user).none?
         reply = text.gsub("ans:", "")
         reply = reply.strip
@@ -166,18 +168,6 @@ class Api::V1::BotsController < Api::V1::ApiController
       end
     else
       return "There's no active question right now, ya goof! :wink:"
-    end
-  end
-
-  ### POST message to slack
-  def post_slack_msg( channel, message )
-    token = ENV["BOT_AUTH"]
-    begin
-      options = { query: { channel: channel, text: message }, headers: { 'Authorization' => "Bearer #{token}"} }
-      response = HTTParty.post('https://slack.com/api/chat.postMessage', options)
-      render :json => {response: response }, :status => :ok
-    rescue => e
-      render :json => {message: "could not post message", error: e}, :status => :not_implemented
     end
   end
 end
