@@ -18,7 +18,13 @@
           <td><%= link_to q.question, question_responses_path(q) %></td>
           <td class="text-center"><%= q.responses.length %></td>
           <td class="text-center"><span class="status <%= 'answered' if q.open %>"></span></td>
-          <td><%= q.date_asked %></td>
+          <td>
+            <% if q.date_asked %>
+              <%= q.date_asked %>
+            <% else %>
+              <em>pending</em>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
