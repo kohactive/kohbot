@@ -28,6 +28,8 @@ table {
     text-align: left;
     color: #555;
     border-bottom: 1px solid #ccc;
+    line-height: 1;
+    white-space: nowrap;
   }
 
   tr:nth-child(even) td {
@@ -39,6 +41,7 @@ table {
   }
   td {
     border-right: 1px solid #ccc;
+    line-height: 1.4;
   }
   
   tr > td:last-child {
