@@ -21,6 +21,6 @@ class QuestionsController < ApplicationController
   private 
   
   def question_params
-    params[:question].permit(:question)
+    params[:question].permit(:question).merge(user: User.first)
    end
 end

@@ -1,25 +1,38 @@
 <div class="page">
   <h1><%= @question.question %></h1>
 
-  <ul>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Answer</th>
+        <%# <th></th> %>
+        <th></th>
+      </tr>
+    </thead>
     <% if @responses.any? %>
       <% @responses.each do |r| %>
-        <li class="reply">
-          <strong>"<%= r.answer %>"</strong>, said <%= r.user %>
-          <span class="pull-right">
-            <%= link_to "✒ Edit", edit_question_response_path(@question, r), action: "edit", class: "primary" %> &nbsp; 
+        <tr>
+          <td><%= r.user.ucode %></td>
+          <td><%= r.answer %></td>
+          <%# <td class="text-center"> %>
+            <%# <%= link_to "✒ Edit", edit_question_response_path(@question, r), action: "edit", class: "primary" %>
+          <%# </td> %>
+          <td class="text-center">
             <%= link_to "✖ Delete", question_response_path(@question, r), method: :delete, data: {confirm: "Are you sure you want to delete this response?"}, class: "danger" %>
-          </span>
-        </li>
+          </td>
+        </tr>
       <% end %>
     <% else %>
-      <li>No responses yet.</li>
+      <tr><td colspan="3">No responses yet.</td></tr>
     <% end %>
-  </ul>
+  </table>
 
   <div class="actions">
     <%= link_to "Back to All Questions", questions_path, class: "btn btn-gray" %>
-    <%= link_to "Add Response", { action: "new" }, class: "btn" %>
+    <%# <% if @question.open %>
+      <%# <%= link_to "Add Response", { action: "new" }, class: "btn" %>
+    <%# <% end %>
     <%= link_to 'Delete Question', question_path(@question), method: :delete, data: {confirm: "Are you sure you want to delete this question and all responses?"}, class: "btn btn-danger" %>
   </div>
 </div>

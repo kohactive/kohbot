@@ -4,8 +4,6 @@
   <%= form_for [question, response] do |f| %>
     <%= f.label(:answer, question.question) %>
     <%= f.text_field :answer, :required => 'required' %>
-    <%= f.label(:user, 'Your Name') %>
-    <%= f.text_field :user, :required => 'required' %>
     <%= link_to "Back", question_responses_path(question), class: "btn btn-gray" %>
     <%= f.submit submit_text %>
   <% end %>
