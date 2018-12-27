@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     end
   end
   # End API route
+  match '/' => redirect('/questions'), via: :get
   # Below: Public FE routes
   resources :questions do
     resources :responses

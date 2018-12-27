@@ -1,0 +1,52 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 1rem;
+
+  .status {
+    position: relative;
+    display: inline-block;
+    width: 11px;
+    height: 16px;
+
+    &:before {
+    content: "✘";
+    color: red;
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0;
+    }
+    &.answered:before {
+      content: "✔";
+      color: green;
+    } 
+  }
+
+  th {
+    text-align: left;
+    color: #555;
+    border-bottom: 1px solid #ccc;
+  }
+
+  tr:nth-child(even) td {
+    background: #eee;
+  }
+
+  td, th {
+    padding: 2px 5px;
+  }
+  td {
+    border-right: 1px solid #ccc;
+  }
+  
+  tr > td:last-child {
+    border-right: 0;
+  }
+
+  .text-center {
+    text-align: center;
+    .status { margin: 0 auto; }
+  }
+}

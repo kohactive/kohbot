@@ -1,11 +1,28 @@
 <div class="page">
   <h1>All Questions</h1>
 
-  <ul>
-    <% @questions.each do |q| %>
-      <li class="<%= 'answered' if q.responses.length > 0 %>"><%= link_to q.question, question_responses_path(q) %> (<%= q.responses.length %> responses)</li>
-    <% end %>
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Question</th>
+        <th class="text-center">Responses</th>
+        <th class="text-center">Open?</th>
+        <th>Date Asked</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @questions.each do |q| %>
+        <tr>
+          <td class="text-center"><span class="status <%= 'answered' if q.responses.length > 0 %>"></span></td>
+          <td><%= link_to q.question, question_responses_path(q) %></td>
+          <td class="text-center"><%= q.responses.length %></td>
+          <td class="text-center"><span class="status <%= 'answered' if q.open %>"></span></td>
+          <td><%= q.date_asked %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
   <div class="actions">
     <%= link_to "Add a Question", { action: "new" }, class: "btn" %>
