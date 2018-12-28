@@ -8,7 +8,7 @@ class ResultsWorker
     logger.info("Starting results worker")
     if Question.open.any?
       question = Question.open.first
-      message = ":rocket: *The results are in!* :rocket:\n"
+      message = ":rocket: *The results are in!* :rocket:\n#{question.question}\n"
       attachments = []
       # Did we get responses?
       logger.info("Checking for responses on question #{question.id}")
