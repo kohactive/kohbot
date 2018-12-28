@@ -67,7 +67,7 @@ class Api::V1::BotsController < Api::V1::ApiController
                 message = "Hey! :v: You're currently opted in. There's no active question right now.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
               else
                 question = Question.open.first
-                message = "Hey! :v: You're currently opted in.\nKohactivers want to know: *#{question.question}*.\nType `ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
+                message = "Hey! :v: You're currently opted in.\nKohactivators want to know: *#{question.question}*.\nType `ans:` followed by your answer to submit your answer.\nType `opt`, `no`, or `leave` to opt out.\nType `question:` followed by your question to add it to the database."
               end
             else
               # false === opted out
