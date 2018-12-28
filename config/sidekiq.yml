@@ -1,1 +1,3 @@
 :concurrency: <%= Integer(ENV.fetch('SIDEKIQ_CONCURRENCY', 25)) %>
+:queues:
+    - default
