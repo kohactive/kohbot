@@ -11,7 +11,7 @@ class QuestionWorker
         todays_question.mark_as_open!
         todays_question.save
         # puts today.question
-        message = "Good morning! After your cup of :coffee:, here\'s today\'s question:\n>*#{todays_question.question}*"
+        message = "Good morning! After your cup of :coffee:, here\'s today\'s question:\n>*#{todays_question.question}*\nType `ans:` followed by your answer."
         attachments = []
         # Get all active users and DM them the question
         all_users = User.where(active: true)
