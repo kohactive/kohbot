@@ -7,7 +7,7 @@ class QuestionWorker
     if Question.open.none?
       # get a random unanswered question
       todays_question = Question.left_outer_joins(:responses).where(responses: {id: nil}).order("RANDOM()").first
-      if today
+      if todays_question
         todays_question.mark_as_open!
         todays_question.save
         # puts today.question
