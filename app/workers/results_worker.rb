@@ -22,10 +22,11 @@ class ResultsWorker
       else
         # Yes -- publish responses
         logger.info("Got responses for #{question.id}")
+        color_options = [ '00cccc', '00ccff', '00ff99', '6600cc', '6600ff', '9900ff', 'cc0099', 'ccccff', 'ff3399', 'ff9900', 'ffcc00']
         question.responses.each do |answer|
           attachments.push({
             fallback: "#{answer.answer}",
-            color: "good",
+            color: "##{color_options.sample}",
             author_name: "<@#{answer.user.ucode}> said:",
             text: "#{answer.answer}"
           })
