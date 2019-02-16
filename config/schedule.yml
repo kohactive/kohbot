@@ -1,7 +1,7 @@
 send_todays_question:
-  cron: "0 8 * * 1-5 America/Chicago"
+  cron: "0 8 * * 1,3,5 America/Chicago"
   class: "QuestionWorker"
 
 post_all_results:
-  cron: "0 14 * * 1-5 America/Chicago"
+  cron: "0 14 * * 1,3,5 America/Chicago"
   class: "ResultsWorker"
