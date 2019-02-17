@@ -3,7 +3,7 @@ send_todays_question:
   class: "QuestionWorker"
 
 remind_active_users:
-  cron: "0 12 * * 1-5 America/Chicago"
+  cron: "0 12 * * 1,3,5 America/Chicago"
   class: "ReminderWorker"
 
 post_all_results:
