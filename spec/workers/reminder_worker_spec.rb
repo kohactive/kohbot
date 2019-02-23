@@ -6,6 +6,8 @@ RSpec.describe ReminderWorker, type: :worker do
 
   # The unanaswered user is the one who wrote the question
   # Generates 4 active users, 3 in :with_answers, 1 as the question's author
+  # Generate an inactive question to be sure doesn't check that one
+  let!(:old_question) { FactoryBot.create(:question,) }
   let!(:question) { FactoryBot.create(:question, :with_answers, :is_open) }
   let!(:inactive_users) { FactoryBot.create_list(:user, 2, :inactive) }
 
